@@ -9,23 +9,28 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Post extends Model
 {
-    public function post_tag(): BelongsToMany {
-        return $this->belongsToMany(Tag::class, 'post_tag');
-    }
-
-    public function post_category(): BelongsToMany {
+    public function categories(): BelongsToMany
+    {
         return $this->belongsToMany(Category::class, 'post_category');
     }
 
-    public function user(): BelongsTo {
+    public function tags(): BelongsToMany
+    {
+        return $this->belongsToMany(Tag::class, 'post_tag');
+    }
+
+    public function user(): BelongsTo
+    {
         return $this->belongsTo(User::class, 'user_id');
     }
 
-    public function media(): HasMany {
+    public function media(): HasMany
+    {
         return $this->hasMany(Media::class);
     }
 
-    public function comment(): HasMany {
+    public function comments(): HasMany
+    {
         return $this->hasMany(Comment::class);
     }
 }

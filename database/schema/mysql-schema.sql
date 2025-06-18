@@ -30,8 +30,8 @@ DROP TABLE IF EXISTS `categories`;
 CREATE TABLE `categories` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `category_name` varchar(255) NOT NULL COMMENT 'News, Review, Podcast, Opinion, Lifestyle, etc.',
-  `slug` varchar(255) NOT NULL COMMENT 'URL identifier of the Category.',
-  `description` varchar(255) NOT NULL COMMENT 'Describes the category.',
+  `slug` varchar(255) NOT NULL COMMENT 'url identifier of a category.',
+  `description` varchar(255) NOT NULL COMMENT 'category description.',
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
@@ -42,11 +42,11 @@ DROP TABLE IF EXISTS `comments`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `comments` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `comment_content` text NOT NULL COMMENT 'Comment content',
-  `comment_date` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp() COMMENT 'Date the Comment was made.',
-  `reviewer_name` varchar(255) DEFAULT NULL COMMENT 'Name of reviewer',
-  `reviewer_email` varchar(255) DEFAULT NULL COMMENT 'Email of reviewer',
-  `is_hidden` tinyint(1) NOT NULL DEFAULT 0 COMMENT 'If comment is hidden.',
+  `comment_content` text NOT NULL COMMENT 'Comment content.',
+  `comment_date` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp() COMMENT 'Comment date.',
+  `reviewer_name` varchar(255) DEFAULT NULL COMMENT 'Reviewer name.',
+  `reviewer_email` varchar(255) DEFAULT NULL COMMENT 'Reviewer email.',
+  `is_hidden` tinyint(1) NOT NULL DEFAULT 0,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
@@ -104,14 +104,11 @@ DROP TABLE IF EXISTS `media`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `media` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `file_name` varchar(255) NOT NULL COMMENT 'Name of uploaded file.',
-  `file_type` varchar(255) NOT NULL COMMENT 'Type of file',
-  `file_size` int(11) NOT NULL DEFAULT 0 COMMENT 'Size of file',
-  `url` varchar(255) NOT NULL COMMENT 'URL of uploaded file.',
-  `upload_date` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp() COMMENT 'Date of file upload.',
-  `description` varchar(255) DEFAULT NULL COMMENT 'Description of file',
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
+  `file_type` varchar(255) NOT NULL COMMENT 'Type of file.',
+  `file_size` int(11) NOT NULL DEFAULT 0 COMMENT 'File size.',
+  `upload_date` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp() COMMENT 'file uploaded date.',
+  `description` varchar(255) DEFAULT NULL COMMENT 'File description.',
+  `sample` int(11) NOT NULL COMMENT 'sample field',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -140,13 +137,13 @@ DROP TABLE IF EXISTS `posts`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `posts` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `title` varchar(255) NOT NULL COMMENT 'Title of the Post.',
-  `content` text NOT NULL COMMENT 'Content of post',
-  `slug` varchar(255) NOT NULL COMMENT 'URL identifier of the Post.',
-  `publication_date` timestamp NULL DEFAULT NULL COMMENT 'Date the Post was published.',
-  `last_modified_date` timestamp NULL DEFAULT NULL COMMENT 'Date the Post was last modified.',
+  `title` varchar(255) NOT NULL COMMENT 'Title of a post.',
+  `content` text NOT NULL COMMENT 'Post content.',
+  `slug` varchar(255) NOT NULL COMMENT 'Url identifier of a post.',
+  `publication_date` timestamp NULL DEFAULT NULL,
+  `last_modified_datesta` timestamp NULL DEFAULT NULL,
   `status` varchar(255) NOT NULL COMMENT 'D - Draft, P - Published, I - Inactive',
-  `featured_image_url` text NOT NULL COMMENT 'URL of featured image',
+  `featured_image_url` text NOT NULL COMMENT 'url of featured image.',
   `views_count` int(11) NOT NULL DEFAULT 0,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
@@ -159,7 +156,7 @@ DROP TABLE IF EXISTS `roles`;
 CREATE TABLE `roles` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `role_name` varchar(255) NOT NULL COMMENT 'A - Admin, C - Contributor, S - Subscriber',
-  `description` varchar(255) NOT NULL COMMENT 'Describes the role.',
+  `description` varchar(255) NOT NULL COMMENT 'role description.',
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
@@ -185,8 +182,8 @@ DROP TABLE IF EXISTS `tags`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `tags` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `tag_name` varchar(255) NOT NULL COMMENT 'Tag name',
-  `slug` varchar(255) NOT NULL COMMENT 'URL identifier of the Tag.',
+  `tag_name` varchar(255) NOT NULL COMMENT 'Tags name.',
+  `slug` varchar(255) NOT NULL COMMENT 'url identifier of a tag.',
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
@@ -197,7 +194,7 @@ DROP TABLE IF EXISTS `users`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `users` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) NOT NULL COMMENT 'User name',
+  `name` varchar(255) NOT NULL COMMENT 'user name.',
   `email` varchar(255) NOT NULL,
   `email_verified_at` timestamp NULL DEFAULT NULL,
   `password` varchar(255) NOT NULL,
@@ -218,10 +215,11 @@ CREATE TABLE `users` (
 INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (1,'0001_01_01_000000_create_users_table',1);
 INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (2,'0001_01_01_000001_create_cache_table',1);
 INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (3,'0001_01_01_000002_create_jobs_table',1);
-INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (4,'2025_05_29_015051_create_posts_table',1);
-INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (5,'2025_05_29_015119_create_roles_table',1);
-INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (6,'2025_05_29_015136_create_categories_table',1);
-INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (7,'2025_05_29_015143_create_tags_table',1);
-INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (8,'2025_05_29_015152_create_comments_table',1);
-INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (9,'2025_05_29_015157_create_media_table',1);
-INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (10,'2025_06_05_005757_database_changes',1);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (4,'2025_05_29_014844_create_posts_table',1);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (5,'2025_05_29_014853_create_comments_table',1);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (6,'2025_05_29_014936_create_media_table',1);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (7,'2025_05_29_014951_create_roles_table',1);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (8,'2025_05_29_014955_create_categories_table',1);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (9,'2025_05_29_014959_create_tags_table',1);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (10,'2025_05_29_024431_change_file_size_to_nullable',1);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (11,'2025_06_05_005748_databases_changes',2);

@@ -14,14 +14,14 @@ class PostSeeder extends Seeder
     {
         $users = User::all();
 
-        if($users->count() == 0) {
-            echo 'No users found. please run UserSeeder.';
+        if ($users->count() == 0)
+        {
+            echo 'No users found, please run UserSeeder.';
             return;
         }
 
         Post::factory(20)->create([
-            'user_id' => $users->random()->id
+            'user_id' => $users->random()->id,
         ]);
     }
 }
-

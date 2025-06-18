@@ -25,7 +25,8 @@ class RoleSeeder extends Seeder
         $adminRole = Role::where('role_name', 'Admin')->first();
         $user = User::first();
 
-        if ($adminRole && $user) {
+        if ($adminRole && $user)
+        {
             $user->roles()->attach($adminRole->id);
         }
     }
