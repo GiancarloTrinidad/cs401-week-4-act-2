@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Str;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Post>
@@ -16,7 +17,7 @@ class PostFactory extends Factory
      */
     public function definition(): array
     {
-        $title = fake()->title();
+        $title = fake()->sentence(rand(1, 3));
         $status = fake()->randomElement(['D', 'P', 'I']);
         return [
             'title' => $title,
